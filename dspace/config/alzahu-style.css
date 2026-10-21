@@ -1,0 +1,56 @@
+﻿:root {
+  --ds-header-bg: #ffffff !important;
+  --ds-header-navbar-border-bottom-color: #06b6d4 !important;
+  --ds-header-navbar-border-bottom-height: 4px !important;
+  --ds-header-icon-color: #0e7490 !important;
+  --ds-header-icon-color-hover: #0891b2 !important;
+  --ds-header-logo-height: 52px !important;
+  --ds-admin-sidebar-bg: #0b1329 !important;
+  --ds-admin-sidebar-header-bg: #070d1e !important;
+  --ds-admin-sidebar-active-bg: #0891b2 !important;
+  --ds-footer-bg: #0b1329 !important;
+  --ds-top-footer-bg: #070d1e !important;
+  --bs-primary: #0891b2 !important;
+  --bs-primary-rgb: 8, 145, 178 !important;
+  --ds-primary-bg: #0891b2 !important;
+  --ds-banner-text-background: rgba(11, 19, 41, 0.82) !important;
+}
+
+.navbar-brand img, .navbar img, ds-header img {
+  max-height: 52px !important;
+  width: auto !important;
+}
+
+.btn-primary, .btn-secondary, .search-button, button.btn-primary {
+  background-color: #0891b2 !important;
+  border-color: #0891b2 !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .search-button:hover {
+  background-color: #0e7490 !important;
+  border-color: #0e7490 !important;
+}
+
+footer, ds-footer, .footer {
+  background-color: #0b1329 !important;
+  border-top: 2px solid #06b6d4 !important;
+  color: #94a3b8 !important;
+}
+
+footer a, ds-footer a, .footer a {
+  color: #38bdf8 !important;
+}
+
+footer a:hover, ds-footer a:hover, .footer a:hover {
+  color: #67e8f9 !important;
+  text-decoration: underline !important;
+}
+
+.banner .lead, .banner-text {
+  color: #f1f5f9 !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #0891b2 !important;
+}

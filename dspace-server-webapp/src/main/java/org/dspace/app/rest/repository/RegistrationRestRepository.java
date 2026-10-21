@@ -1,0 +1,331 @@
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
+ *
+ * http://www.dspace.org/license/
+ */
+package org.dspace.app.rest.repository;
+
+import static org.dspace.eperson.service.CaptchaService.REGISTER_ACTION;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Set;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.dspace.app.rest.Parameter;
+import org.dspace.app.rest.SearchRestMethod;
+import org.dspace.app.rest.exception.DSpaceBadRequestException;
+import org.dspace.app.rest.exception.RepositoryMethodNotImplementedException;
+import org.dspace.app.rest.exception.UnprocessableEntityException;
+import org.dspace.app.rest.model.RegistrationRest;
+import org.dspace.app.rest.model.patch.Patch;
+import org.dspace.app.rest.repository.patch.ResourcePatch;
+import org.dspace.app.rest.repository.patch.operation.RegistrationEmailPatchOperation;
+import org.dspace.app.rest.utils.Utils;
+import org.dspace.app.util.AuthorizeUtil;
+import org.dspace.authenticate.service.AuthenticationService;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.core.Context;
+import org.dspace.eperson.EPerson;
+import org.dspace.eperson.InvalidReCaptchaException;
+import org.dspace.eperson.RegistrationData;
+import org.dspace.eperson.RegistrationTypeEnum;
+import org.dspace.eperson.factory.CaptchaServiceFactory;
+import org.dspace.eperson.service.AccountService;
+import org.dspace.eperson.service.CaptchaService;
+import org.dspace.eperson.service.EPersonService;
+import org.dspace.eperson.service.RegistrationDataService;
+import org.dspace.services.ConfigurationService;
+import org.dspace.services.RequestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
+
+/**
+ * This is the repository that is responsible for managing Registration Rest objects
+ */
+@Component(RegistrationRest.CATEGORY + "." + RegistrationRest.PLURAL_NAME)
+public class RegistrationRestRepository extends DSpaceRestRepository<RegistrationRest, Integer> {
+
+    private static Logger log = LogManager.getLogger(RegistrationRestRepository.class);
+
+    public static final String TOKEN_QUERY_PARAM = "token";
+    public static final String TYPE_QUERY_PARAM = "accountRequestType";
+    public static final String TYPE_REGISTER = RegistrationTypeEnum.REGISTER.toString().toLowerCase();
+    public static final String TYPE_FORGOT = RegistrationTypeEnum.FORGOT.toString().toLowerCase();
+
+    @Autowired
+    private EPersonService ePersonService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    private RequestService requestService;
+
+    // TODO: Work towards full coverage of captcha, so we can use getCaptchaService() here instead
+    private CaptchaService captchaService = CaptchaServiceFactory.getInstance().getGoogleCaptchaService();
+
+    @Autowired
+    private ConfigurationService configurationService;
+
+    @Autowired
+    private RegistrationDataService registrationDataService;
+
+    @Autowired
+    private Utils utils;
+
+    @Autowired
+    private ResourcePatch<RegistrationData> resourcePatch;
+
+    @Autowired
+    private ObjectMapper mapper;
+
+    @Autowired
+    private Validator validator;
+
+    @Override
+    @PreAuthorize("permitAll()")
+    public RegistrationRest findOne(Context context, Integer integer) {
+        throw new RepositoryMethodNotImplementedException("No implementation found; Method not allowed!", "");
+    }
+
+    @Override
+    public Page<RegistrationRest> findAll(Context context, Pageable pageable) {
+        throw new RepositoryMethodNotImplementedException("No implementation found; Method not allowed!", "");
+    }
+
+    @Override
+    public RegistrationRest createAndReturn(Context context) {
+        HttpServletRequest request = requestService.getCurrentRequest().getHttpServletRequest();
+        String accountType = request.getParameter(TYPE_QUERY_PARAM);
+        if (StringUtils.isBlank(accountType) ||
+            (!accountType.equalsIgnoreCase(TYPE_FORGOT) && !accountType.equalsIgnoreCase(TYPE_REGISTER))) {
+            throw new IllegalArgumentException(String.format("Needs query param '%s' with value %s or %s indicating " +
+                "what kind of registration request it is", TYPE_QUERY_PARAM, TYPE_FORGOT, TYPE_REGISTER));
+        }
+        String captchaToken = request.getHeader("x-captcha-payload");
+        boolean verificationEnabled = configurationService.getBooleanProperty("registration.verification.enabled");
+
+        if (verificationEnabled && !accountType.equalsIgnoreCase(TYPE_FORGOT)) {
+            try {
+                captchaService.processResponse(captchaToken, REGISTER_ACTION);
+            } catch (InvalidReCaptchaException e) {
+                throw new InvalidReCaptchaException(e.getMessage(), e);
+            }
+        }
+
+        RegistrationRest registrationRest;
+        try {
+            ServletInputStream input = request.getInputStream();
+            registrationRest = mapper.readValue(input, RegistrationRest.class);
+        } catch (IOException e1) {
+            throw new UnprocessableEntityException("Error parsing request body.", e1);
+        }
+
+        // Validation of deserialized object
+        Set<ConstraintViolation<RegistrationRest>> violations = validator.validate(registrationRest);
+        if (violations != null && !violations.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (ConstraintViolation<RegistrationRest> v : violations) {
+                sb.append(v.getPropertyPath())
+                    .append(": ")
+                    .append(v.getMessage())
+                    .append("; ");
+            }
+            throw new UnprocessableEntityException("Validation error: " + sb.toString());
+        }
+
+        EPerson eperson = null;
+        try {
+            eperson = ePersonService.findByEmail(context, registrationRest.getEmail());
+        } catch (SQLException e) {
+            log.error("Something went wrong retrieving EPerson for email: " + registrationRest.getEmail(), e);
+        }
+
+        if (eperson != null && accountType.equalsIgnoreCase(TYPE_FORGOT)) {
+            resetPassword(context, registrationRest, eperson);
+        } else if (accountType.equalsIgnoreCase(TYPE_REGISTER)) {
+            if (eperson == null) {
+                registerEperson(context, request, registrationRest);
+            } else {
+                // if an eperson with this email already exists then send "forgot password" email instead
+                resetPassword(context, registrationRest, eperson);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This method will register a new eperson with the email given in the registrationRest object, and send an
+     * registration email to that email address.
+     * @param context
+     * @param request
+     * @param registrationRest
+     * @throws UnprocessableEntityException If self registration is not allowed.
+     * @throws AccessDeniedException If the user is not authorized to register a new eperson
+     */
+    private void registerEperson(Context context, HttpServletRequest request, RegistrationRest registrationRest)
+        throws UnprocessableEntityException, AccessDeniedException {
+        try {
+            if (!AuthorizeUtil.authorizeNewAccountRegistration(context, request)) {
+                throw new AccessDeniedException(
+                        "Registration is disabled, you are not authorized to create a new Authorization");
+            }
+
+            if (!authenticationService.canSelfRegister(context, request, registrationRest.getEmail())) {
+                throw new UnprocessableEntityException(
+                        String.format("Registration is not allowed with email address" +
+                                " %s", registrationRest.getEmail()));
+            }
+
+            accountService.sendRegistrationInfo(context, registrationRest.getEmail());
+        } catch (SQLException | IOException | MessagingException | AuthorizeException e) {
+            log.error("Something went wrong with sending registration info email: "
+                    + registrationRest.getEmail(), e);
+        }
+    }
+
+    /**
+     * This method will send a forgot password email to the email address given in the registrationRest object, if the
+     * email address belongs to an existing eperson. If the email address doesn't belong to any existing eperson,
+     * nothing will happen.
+     * @param context
+     * @param registrationRest
+     * @param eperson
+     * @throws AccessDeniedException If the user is not authorized to reset the password for the given eperson
+     * @throws DSpaceBadRequestException If the password cannot be updated for the given eperson
+     */
+    private void resetPassword(Context context, RegistrationRest registrationRest, EPerson eperson)
+        throws AccessDeniedException, DSpaceBadRequestException {
+        try {
+            if (!AuthorizeUtil.authorizeForgotPassword()) {
+                throw new AccessDeniedException("Password reset is not allowed!");
+            }
+            if (!AuthorizeUtil.authorizeUpdatePassword(context, eperson.getEmail())) {
+                throw new DSpaceBadRequestException("Password cannot be updated for the given EPerson with email: "
+                                                        + eperson.getEmail());
+            }
+            accountService.sendForgotPasswordInfo(context, registrationRest.getEmail());
+        } catch (SQLException | IOException | MessagingException | AuthorizeException e) {
+            log.error("Something went wrong with sending forgot password info email: "
+                          + registrationRest.getEmail(), e);
+        }
+    }
+
+    /**
+     * This method will find the RegistrationRest object that is associated with the token given
+     *
+     * @param token The token to be found and for which a RegistrationRest object will be found
+     * @return A RegistrationRest object for the given token
+     * @throws SQLException       If something goes wrong
+     * @throws AuthorizeException If something goes wrong
+     */
+    @SearchRestMethod(name = "findByToken")
+    public RegistrationRest findByToken(@Parameter(value = "token", required = true) String token)
+        throws SQLException, AuthorizeException, DSpaceBadRequestException {
+        if (StringUtils.isBlank(token)) {
+            throw new DSpaceBadRequestException("Missing or empty token query parameter");
+        }
+        if (StringUtils.length(token) > 48) {
+            throw new DSpaceBadRequestException("Token length cannot be longer than 48 characters");
+        }
+
+        Context context = obtainContext();
+        RegistrationData registrationData = registrationDataService.findByToken(context, token);
+        if (registrationData == null) {
+            throw new ResourceNotFoundException("The token: " + token + " couldn't be found");
+        }
+        return converter.toRest(registrationData, utils.obtainProjection());
+    }
+
+    /**
+     * Validate that this registration token allows PATCHing the registration data.
+     * PATCH is only allowed if the token is valid, corresponds to the registration ID, and
+     * the registration is related to an external login (e.g. ORCID).
+     * @param context DSpace Context
+     * @param id Registration ID
+     * @param token Registration token
+     */
+    private void validateTokenForPatch(Context context, Integer id, String token) {
+        try {
+            RegistrationData registrationData =
+                registrationDataService.findByToken(context, token);
+            if (registrationData == null || !registrationDataService.isValid(registrationData) ||
+                !id.equals(registrationData.getID())) {
+                throw new AccessDeniedException("The token is invalid");
+            }
+            // PATCH can only be used for external-login and review-account type registrations.
+            if (!RegistrationTypeEnum.ORCID.equals(registrationData.getRegistrationType()) &&
+                !RegistrationTypeEnum.VALIDATION_ORCID.equals(registrationData.getRegistrationType())) {
+                throw new AccessDeniedException("The registration data cannot be updated");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * This method can be used to update a {@link RegistrationData} with a given {@code id} that has a valid
+     * {@code token} with the actions described in the {@link Patch} object.
+     * This method is used to patch the email value, and will generate a completely new {@code token} that will be
+     * sent with an email {@link RegistrationEmailPatchOperation}.
+     *
+     */
+    @Override
+    public RegistrationRest patch(
+        HttpServletRequest request, String apiCategory, String model, Integer id, Patch patch
+    ) throws UnprocessableEntityException, DSpaceBadRequestException {
+        if (id == null || id <= 0) {
+            throw new DSpaceBadRequestException("The id of the registration cannot be null or negative");
+        }
+        if (patch == null || patch.getOperations() == null || patch.getOperations().isEmpty()) {
+            throw new DSpaceBadRequestException("Patch request is incomplete: cannot find operations");
+        }
+        String token = request.getParameter("token");
+        if (StringUtils.isBlank(token)) {
+            throw new DSpaceBadRequestException("Missing or empty token query parameter");
+        }
+        if (StringUtils.length(token) > 48) {
+            throw new DSpaceBadRequestException("Token length cannot be longer than 48 characters");
+        }
+        Context context = obtainContext();
+
+        validateTokenForPatch(context, id, token);
+
+        try {
+            resourcePatch.patch(context, registrationDataService.find(context, id), patch.getOperations());
+            context.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public void setCaptchaService(CaptchaService captchaService) {
+        this.captchaService = captchaService;
+    }
+
+    @Override
+    public Class<RegistrationRest> getDomainClass() {
+        return RegistrationRest.class;
+    }
+
+}

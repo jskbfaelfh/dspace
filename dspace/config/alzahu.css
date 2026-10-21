@@ -1,0 +1,1394 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Alexandria:wght@400;600;700;800&display=swap');
+
+/* ============================================================
+   AL-ZAHRAWI UNIVERSITY REPOSITORY THEME - COMPLETE OVERHAUL
+   ============================================================ */
+
+:root {
+  --alzahu-navy-dark: #070d1e;
+  --alzahu-navy: #0b1329;
+  --alzahu-navy-light: #16203d;
+  --alzahu-cyan: #06b6d4;
+  --alzahu-cyan-hover: #0891b2;
+  --alzahu-blue: #0284c7;
+  --alzahu-teal: #10b981;
+  --alzahu-slate: #64748b;
+  --alzahu-bg-light: #f8fafc;
+  
+  --ds-header-bg: #0b1329 !important;
+  --ds-header-navbar-border-bottom-color: #06b6d4 !important;
+  --ds-header-navbar-border-bottom-height: 3px !important;
+  --ds-header-icon-color: #38bdf8 !important;
+  --ds-header-icon-color-hover: #67e8f9 !important;
+  --ds-header-logo-height: 56px !important;
+  --ds-admin-sidebar-bg: #070d1e !important;
+  --ds-admin-sidebar-header-bg: #050914 !important;
+  --ds-admin-sidebar-active-bg: #0891b2 !important;
+  --ds-footer-bg: #070d1e !important;
+  --ds-top-footer-bg: #050914 !important;
+  --bs-primary: #0891b2 !important;
+  --bs-primary-rgb: 8, 145, 178 !important;
+  --ds-primary-bg: #0891b2 !important;
+  
+  --ds-navbar-bg: transparent !important;
+  --ds-navbar-link-bg: transparent !important;
+  --ds-navbar-link-color: #f1f5f9 !important;
+  --ds-navbar-link-color-hover: #38bdf8 !important;
+  --ds-navbar-link-bg-hover: rgba(6, 182, 212, 0.18) !important;
+  --ds-user-menu-bg: transparent !important;
+  --ds-user-menu-dropdown-link-bg: #0b1329 !important;
+  --ds-user-menu-dropdown-link-color: #f1f5f9 !important;
+}
+
+/* 1. TYPOGRAPHY - PRESERVE FONTAWESOME */
+body, p, h1, h2, h3, h4, h5, h6, input, select, textarea {
+  font-family: 'Cairo', 'Alexandria', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+a:not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab),
+span:not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab),
+div:not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab),
+button:not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab) {
+  font-family: 'Cairo', 'Alexandria', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* CRITICAL FIX FOR MISSING ICONS: Protect FontAwesome glyphs */
+.fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands, [class*="fa-"], [class^="fa-"] {
+  font-family: "Font Awesome 6 Free" !important;
+  font-style: normal !important;
+  font-variant: normal !important;
+  text-rendering: auto !important;
+  line-height: 1 !important;
+}
+.fab, .fa-brands {
+  font-family: "Font Awesome 6 Brands" !important;
+}
+
+body {
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+  overflow-x: hidden !important;
+}
+
+/* 2. NAVBAR & HEADER */
+#main-site-header {
+  background: #0b1329 !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5) !important;
+  padding: 10px 0 !important;
+  border-bottom: 2px solid #06b6d4 !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
+
+#main-site-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #06b6d4, #38bdf8, transparent);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+  z-index: 21 !important;
+}
+
+/* ADMIN SIDEBAR PRIORITY (ALWAYS ABOVE NAVBAR) */
+ds-admin-sidebar,
+ds-base-admin-sidebar,
+nav#admin-sidebar,
+.admin-sidebar {
+  z-index: 1050 !important;
+}
+
+nav#admin-sidebar {
+  background-color: #070d1e !important;
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.5) !important;
+  border-right: 1px solid rgba(6, 182, 212, 0.25) !important;
+}
+
+html[dir="rtl"] nav#admin-sidebar {
+  border-right: 1px solid rgba(6, 182, 212, 0.25) !important;
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+nav#admin-sidebar .sidebar-header,
+nav#admin-sidebar div[class*="sidebar-header"] {
+  background-color: #050914 !important;
+  border-bottom: 1px solid rgba(6, 182, 212, 0.3) !important;
+  padding: 12px 14px !important;
+  min-height: 56px !important;
+}
+
+#header-logo {
+  max-height: 54px !important;
+  width: auto !important;
+  filter: drop-shadow(0 2px 8px rgba(56, 189, 248, 0.4)) !important;
+}
+
+/* Clean transparent navbar wrappers */
+#header-navbar-wrapper,
+#desktop-navbar,
+#main-site-navigation,
+.navbar-nav,
+.navbar-nav-desktop,
+ds-navbar,
+ds-themed-navbar,
+ds-navbar-section,
+ds-expandable-navbar-section,
+.ds-menu-item-wrapper,
+ds-link-menu-item,
+ds-text-menu-item,
+#navbar-section-public_0_0,
+#expandable-navbar-section-public_1_0,
+#navbar-section-public_2_0 {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#main-site-navigation a,
+#main-site-navigation a.ds-menu-item,
+#main-site-navigation a.ds-menu-toggler-wrapper,
+#main-site-navigation span.ds-menu-item,
+.ds-menu-toggler-wrapper {
+  color: #f1f5f9 !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  padding: 8px 18px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+}
+
+#main-site-navigation a:hover,
+#main-site-navigation a.ds-menu-item:hover,
+#main-site-navigation a.ds-menu-toggler-wrapper:hover,
+#main-site-navigation span.ds-menu-item:hover,
+.ds-menu-toggler-wrapper:hover {
+  color: #38bdf8 !important;
+  background: rgba(6, 182, 212, 0.2) !important;
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.3) !important;
+  transform: translateY(-2px) !important;
+}
+
+#main-site-navigation .toggle-menu-icon,
+#main-site-navigation .fa-caret-down {
+  color: #38bdf8 !important;
+  margin-right: 6px !important;
+}
+
+/* User & Right buttons */
+#header-right,
+#header-right > div,
+#header-right div[role="toolbar"],
+ds-auth-nav-menu,
+ds-base-auth-nav-menu,
+ds-lang-switch,
+ds-base-lang-switch {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#header-right button,
+#header-right a,
+#header-right button.btn-link,
+#header-right button.dropdown-toggle,
+#header-right .search-toggle,
+#header-right .dropdownLogin,
+ds-user-menu button,
+ds-lang-switch button,
+ds-base-lang-switch button,
+ds-auth-nav-menu button,
+ds-base-auth-nav-menu button {
+  background: rgba(255, 255, 255, 0.06) !important;
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  color: #38bdf8 !important;
+  border-radius: 10px !important;
+  padding: 8px 14px !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  height: 40px !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+#header-right button:hover,
+#header-right a:hover,
+#header-right button.btn-link:hover,
+#header-right button.dropdown-toggle:hover,
+#header-right .search-toggle:hover,
+#header-right .dropdownLogin:hover,
+ds-user-menu button:hover,
+ds-lang-switch button:hover,
+ds-base-lang-switch button:hover,
+ds-auth-nav-menu button:hover,
+ds-base-auth-nav-menu button:hover {
+  background: rgba(6, 182, 212, 0.25) !important;
+  background-color: rgba(6, 182, 212, 0.25) !important;
+  color: #ffffff !important;
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.4) !important;
+}
+
+/* NAVBAR SEARCH INPUT (PREVENT WHITE BOX OVERLAPPING BUTTONS) */
+ds-search-navbar,
+ds-base-search-navbar,
+ds-themed-search-navbar {
+  position: relative !important;
+}
+
+ds-search-navbar form,
+ds-base-search-navbar form {
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+}
+
+ds-search-navbar input[type="text"],
+ds-base-search-navbar input[type="text"],
+ds-themed-search-navbar input[type="text"],
+.search-toggle ~ form input[type="text"] {
+  background-color: #16203d !important;
+  background: #16203d !important;
+  color: #ffffff !important;
+  border: 1.5px solid #06b6d4 !important;
+  border-radius: 20px !important;
+  padding: 6px 14px !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(6, 182, 212, 0.3) !important;
+  position: static !important;
+  right: auto !important;
+  left: auto !important;
+  width: 170px !important;
+  max-width: 200px !important;
+  height: 40px !important;
+}
+
+ds-search-navbar input[type="text"]::placeholder {
+  color: #94a3b8 !important;
+}
+
+ds-search-navbar .submit-icon {
+  color: #38bdf8 !important;
+  background: transparent !important;
+  border: none !important;
+  height: 40px !important;
+  padding: 0 8px !important;
+}
+
+/* LANGUAGE SWITCHER MENU */
+#language-menu-list {
+  background-color: #0b1329 !important;
+  background: #0b1329 !important;
+  border: 1px solid #06b6d4 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+  max-height: 350px !important;
+  overflow-y: auto !important;
+  min-width: 180px !important;
+}
+
+#language-menu-list .dropdown-item {
+  color: #f1f5f9 !important;
+  padding: 8px 14px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-align: right !important;
+}
+
+#language-menu-list .dropdown-item:hover,
+#language-menu-list .dropdown-item.active {
+  background-color: rgba(6, 182, 212, 0.25) !important;
+  color: #38bdf8 !important;
+}
+
+#header-navbar-wrapper i,
+#main-site-header i {
+  color: #38bdf8 !important;
+}
+
+/* 3. DROPDOWN MENUS (DARK NAVY WITH GLOWING CYAN ACCENTS) */
+.dropdown-menu,
+.dropdown-menu.show,
+div[aria-labelledby*="dropdown"],
+#expandable-navbar-section-public_1_0-dropdown,
+.navbar-nav .dropdown-menu,
+.nav-dropdown-menu,
+ds-expandable-navbar-section .dropdown-menu,
+ds-themed-expandable-navbar-section .dropdown-menu,
+div[id*="expandable-navbar-section"][role="menu"] {
+  background: #0b1329 !important;
+  background-color: #0b1329 !important;
+  border: 1px solid #06b6d4 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+  padding: 8px !important;
+  min-width: 230px !important;
+  text-align: right !important;
+  margin-top: 8px !important;
+}
+
+.dropdown-item,
+.dropdown-menu a,
+.dropdown-menu .ds-menu-item,
+.dropdown-menu a.dropdown-item,
+.dropdown-menu button,
+.dropdown-menu span,
+.dropdown-menu div[role="presentation"] a,
+.nav-dropdown-menu .ds-menu-item,
+.nav-dropdown-menu a {
+  color: #f1f5f9 !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease !important;
+  text-align: right !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+}
+
+.dropdown-item:hover,
+.dropdown-menu a:hover,
+.dropdown-menu .ds-menu-item:hover,
+.dropdown-menu a.dropdown-item:hover,
+.dropdown-menu div[role="presentation"] a:hover,
+.nav-dropdown-menu .ds-menu-item:hover,
+.nav-dropdown-menu a:hover {
+  background: rgba(6, 182, 212, 0.25) !important;
+  background-color: rgba(6, 182, 212, 0.25) !important;
+  color: #38bdf8 !important;
+  padding-right: 20px !important;
+}
+
+/* 4. COMMUNITY LIST PAGE (/community-list) */
+ds-community-list-page,
+ds-base-community-list-page,
+.community-list-page,
+.container.mb-cs {
+  background: #f8fafc !important;
+  padding-top: 30px !important;
+  padding-bottom: 60px !important;
+}
+
+ds-community-list-page h1,
+ds-community-list-page h2,
+.community-list-page h2 {
+  color: #0b1329 !important;
+  font-weight: 800 !important;
+  font-size: 2.2rem !important;
+  text-align: center !important;
+  margin-bottom: 30px !important;
+  position: relative !important;
+}
+
+ds-community-list-page h1::after,
+ds-community-list-page h2::after,
+.community-list-page h2::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #06b6d4, #0284c7);
+  border-radius: 2px;
+  margin: 12px auto 0 auto;
+}
+
+/* Community list items as modern cards */
+ds-community-list-page li,
+.community-list-item,
+ds-community-list-page ds-community-list-entry,
+ds-community-list-page .d-flex.flex-row {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 14px !important;
+  margin-bottom: 14px !important;
+  padding: 16px 20px !important;
+  box-shadow: 0 4px 15px rgba(11, 19, 41, 0.04) !important;
+  transition: all 0.25s ease !important;
+}
+
+ds-community-list-page li:hover,
+.community-list-item:hover {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+ds-community-list-page a.lead,
+.community-list-item a {
+  color: #0b1329 !important;
+  font-weight: 800 !important;
+  font-size: 1.15rem !important;
+  text-decoration: none !important;
+}
+
+ds-community-list-page a.lead:hover,
+.community-list-item a:hover {
+  color: #0891b2 !important;
+}
+
+/* 5. HERO BANNER OVERHAUL */
+.background-image-container {
+  background: linear-gradient(135deg, #070d1e 0%, #0b1329 45%, #032b43 100%) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 45px 0 65px 0 !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2) !important;
+}
+
+.home-news-content > div:not(#alzahu-custom-hero),
+.home-news-content p,
+.home-news-content ul,
+.home-news-content .credits,
+.home-news-content small {
+  display: none !important;
+}
+
+.background-image {
+  opacity: 0.15 !important;
+  mix-blend-mode: luminosity !important;
+}
+
+.home-news-content {
+  background: rgba(11, 19, 41, 0.8) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  padding: 38px 30px !important;
+  color: #ffffff !important;
+  text-align: center !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+#alzahu-custom-hero {
+  display: block !important;
+}
+
+.alzahu-hero-badge {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  color: #38bdf8;
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+}
+
+.alzahu-hero-title {
+  display: block !important;
+  font-size: 2.5rem !important;
+  font-weight: 900 !important;
+  color: #ffffff !important;
+  margin-bottom: 8px !important;
+  letter-spacing: -0.5px !important;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.alzahu-hero-subtitle {
+  display: block !important;
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  color: #38bdf8 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 14px !important;
+}
+
+.alzahu-hero-desc {
+  display: block !important;
+  font-size: 1.15rem !important;
+  color: #cbd5e1 !important;
+  max-width: 820px !important;
+  margin: 0 auto 25px auto !important;
+  line-height: 1.8 !important;
+  font-weight: 500 !important;
+}
+
+.alzahu-hero-pills {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.alzahu-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.alzahu-pill:hover {
+  background: rgba(6, 182, 212, 0.2);
+  border-color: #06b6d4;
+  color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+/* 6. FLOATING SEARCH FORM (HOMEPAGE HERO ONLY) */
+ds-home-page ds-search-form form,
+ds-themed-home-page ds-search-form form,
+.home-page ds-search-form form,
+.home-news-content ~ ds-search-form form {
+  margin-top: -32px !important;
+  position: relative !important;
+  z-index: 25 !important;
+}
+
+ds-home-page ds-search-form .input-group,
+ds-themed-home-page ds-search-form .input-group,
+.home-page ds-search-form .input-group,
+.home-news-content ~ ds-search-form .input-group {
+  max-width: 860px !important;
+  margin: 0 auto !important;
+  background: #ffffff !important;
+  border-radius: 50px !important;
+  padding: 6px 8px !important;
+  box-shadow: 0 15px 35px -5px rgba(11, 19, 41, 0.18), 0 0 0 3px rgba(6, 182, 212, 0.3) !important;
+  border: 1px solid rgba(6, 182, 212, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* SEARCH FORM INSIDE COMMUNITY & COLLECTION PAGES */
+ds-comcol-search-section ds-search-form form,
+.comcol-page-browse-section ds-search-form form {
+  margin-top: 15px !important;
+  margin-bottom: 25px !important;
+  position: static !important;
+  z-index: 1 !important;
+}
+
+ds-comcol-search-section ds-search-form .input-group,
+.comcol-page-browse-section ds-search-form .input-group {
+  max-width: 100% !important;
+  margin: 0 !important;
+  background: #ffffff !important;
+  border-radius: 14px !important;
+  padding: 4px 6px !important;
+  box-shadow: 0 4px 15px rgba(11, 19, 41, 0.06) !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+ds-comcol-search-section ds-search-form button.search-button,
+.comcol-page-browse-section ds-search-form button.search-button {
+  border-radius: 10px !important;
+  padding: 8px 24px !important;
+}
+
+ds-search-form .input-group:focus-within {
+  box-shadow: 0 20px 40px -5px rgba(6, 182, 212, 0.3), 0 0 0 4px rgba(6, 182, 212, 0.5) !important;
+}
+
+ds-search-form input.form-control {
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  color: #0f172a !important;
+  padding: 12px 24px !important;
+  background: transparent !important;
+}
+
+ds-search-form input.form-control::placeholder {
+  color: #94a3b8 !important;
+  font-weight: 500 !important;
+}
+
+ds-search-form button.search-button {
+  border-radius: 50px !important;
+  background: linear-gradient(135deg, #0891b2 0%, #0284c7 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  padding: 10px 32px !important;
+  box-shadow: 0 4px 15px rgba(8, 145, 178, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+ds-search-form button.search-button:hover {
+  background: linear-gradient(135deg, #06b6d4 0%, #0369a1 100%) !important;
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5) !important;
+  transform: scale(1.02) !important;
+}
+
+/* 7. COLLEGES & COMMUNITIES GRID */
+ds-top-level-community-list {
+  display: block !important;
+  margin-top: 50px !important;
+  padding-bottom: 60px !important;
+}
+
+ds-top-level-community-list h2 {
+  font-size: 2.1rem !important;
+  font-weight: 800 !important;
+  color: #0b1329 !important;
+  text-align: center !important;
+  position: relative !important;
+  margin-bottom: 12px !important;
+}
+
+ds-top-level-community-list h2::after {
+  content: '';
+  display: block;
+  width: 70px;
+  height: 4px;
+  background: linear-gradient(90deg, #06b6d4, #0284c7);
+  border-radius: 2px;
+  margin: 12px auto 0 auto;
+}
+
+ds-top-level-community-list p.lead {
+  text-align: center !important;
+  color: #64748b !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+  max-width: 650px !important;
+  margin: 0 auto 35px auto !important;
+}
+
+ul[data-test="objects"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+  gap: 25px !important;
+  padding: 0 !important;
+  margin-top: 25px !important;
+}
+
+ul[data-test="objects"] > li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+ds-community-list-element {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  padding: 26px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(11, 19, 41, 0.05) !important;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+ds-community-list-element::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #06b6d4, #0284c7);
+  opacity: 0.7;
+}
+
+ds-community-list-element:hover {
+  transform: translateY(-8px) !important;
+  border-color: #06b6d4 !important;
+  box-shadow: 0 20px 35px -5px rgba(6, 182, 212, 0.2) !important;
+}
+
+ds-community-list-element a.lead {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  color: #0b1329 !important;
+  text-decoration: none !important;
+  margin-bottom: 10px !important;
+  display: block !important;
+}
+
+ds-community-list-element a.lead:hover {
+  color: #0891b2 !important;
+}
+
+ds-community-list-element .abstract-text {
+  color: #64748b !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 20px !important;
+  flex-grow: 1 !important;
+}
+
+.alzahu-card-footer {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alzahu-explore-btn {
+  color: #0891b2;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 8. FOOTER */
+ds-footer footer,
+.bottom-footer {
+  background-color: #070d1e !important;
+  border-top: 2px solid #06b6d4 !important;
+  position: relative !important;
+  padding: 35px 0 25px 0 !important;
+}
+
+ds-footer footer::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #06b6d4, #38bdf8, transparent);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+}
+
+.bottom-footer p, 
+.bottom-footer a, 
+.bottom-footer button {
+  color: #94a3b8 !important;
+  font-size: 0.9rem !important;
+}
+
+.bottom-footer a:hover, 
+.bottom-footer button:hover {
+  color: #38bdf8 !important;
+  text-decoration: underline !important;
+}
+
+/* ============================================================
+   9. LOGIN DROPDOWN & AUTHENTICATION POPUP (HIGH-END SLEEK THEME)
+   ============================================================ */
+ds-user-menu .dropdown-menu {
+  min-width: 390px !important;
+  width: 390px !important;
+  max-width: 90vw !important;
+  background-color: #0b1329 !important;
+  background: #0b1329 !important;
+  border: 1.5px solid #06b6d4 !important;
+  border-radius: 18px !important;
+  padding: 24px 26px !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(6, 182, 212, 0.25) !important;
+  overflow: visible !important;
+}
+
+ds-user-menu .login-container,
+.login-container {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Inputs styling */
+.form-login input.form-control,
+.form-login input[type="email"] {
+  background-color: #16203d !important;
+  background: #16203d !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  color: #ffffff !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  margin-bottom: 12px !important;
+  width: 100% !important;
+  box-shadow: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.form-login input.form-control::placeholder,
+.form-login input[type="email"]::placeholder,
+.form-login input[type="password"]::placeholder {
+  color: #94a3b8 !important;
+  font-size: 0.9rem !important;
+}
+
+.form-login input.form-control:focus,
+.form-login input[type="email"]:focus {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.45) !important;
+  background-color: #1a274c !important;
+  outline: none !important;
+  color: #ffffff !important;
+}
+
+/* Password unified group container */
+.form-login .password-group {
+  display: flex !important;
+  flex-direction: row-reverse !important; /* In RTL, place toggle button and input cleanly */
+  align-items: stretch !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  background-color: #16203d !important;
+  margin-bottom: 16px !important;
+  transition: all 0.25s ease !important;
+}
+
+.form-login .password-group:focus-within {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.45) !important;
+  background-color: #1a274c !important;
+}
+
+.form-login .password-group input[type="password"] {
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  margin-bottom: 0 !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  padding: 10px 14px !important;
+  flex: 1 1 auto !important;
+  outline: none !important;
+}
+
+.form-login .password-group .password-toggle,
+.form-login .password-group button.btn {
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  color: #38bdf8 !important;
+  box-shadow: none !important;
+  padding: 0 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+.form-login .password-group .password-toggle:hover {
+  color: #67e8f9 !important;
+}
+
+/* Submit Button */
+.form-login button[type="submit"],
+.form-login button.btn-primary {
+  background: linear-gradient(135deg, #0891b2 0%, #0284c7 100%) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  padding: 11px 20px !important;
+  box-shadow: 0 4px 15px rgba(8, 145, 178, 0.4) !important;
+  transition: all 0.25s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 6px !important;
+  cursor: pointer !important;
+}
+
+.form-login button[type="submit"]:hover:not(:disabled),
+.form-login button.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #06b6d4 0%, #0369a1 100%) !important;
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5) !important;
+  transform: translateY(-1px) !important;
+}
+
+.form-login button[type="submit"] i,
+.form-login button.btn-primary i {
+  color: #ffffff !important;
+}
+
+/* Links below button (New user / Forgot password) */
+ds-user-menu .dropdown-menu a.dropdown-item,
+.form-login ~ div a.dropdown-item,
+.form-login .mt-2 a.dropdown-item,
+ds-themed-log-in a.dropdown-item,
+ds-log-in-password a.dropdown-item {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #38bdf8 !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  padding: 8px 4px !important;
+  text-align: center !important;
+  justify-content: center !important;
+  text-decoration: underline !important;
+  transition: color 0.2s ease !important;
+  display: block !important;
+}
+
+ds-user-menu .dropdown-menu a.dropdown-item:hover,
+.form-login ~ div a.dropdown-item:hover,
+.form-login .mt-2 a.dropdown-item:hover,
+ds-themed-log-in a.dropdown-item:hover,
+ds-log-in-password a.dropdown-item:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #67e8f9 !important;
+  transform: none !important;
+  padding-right: 4px !important;
+  text-decoration: underline !important;
+}
+
+/* ============================================================
+   10. ENHANCED COMMUNITY LIST & TREE CARDS (/community-list)
+   ============================================================ */
+ds-community-list cdk-tree,
+.community-list-page cdk-tree,
+cdk-tree {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  padding: 15px 0 40px 0 !important;
+  background: transparent !important;
+}
+
+cdk-tree-node {
+  display: block !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 18px !important;
+  padding: 20px 24px !important;
+  box-shadow: 0 4px 18px rgba(11, 19, 41, 0.05) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Accent strip on side of card */
+cdk-tree-node::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 5px;
+  background: linear-gradient(180deg, #06b6d4, #0284c7);
+  border-radius: 0 18px 18px 0;
+}
+
+html[dir="ltr"] cdk-tree-node::before {
+  right: auto;
+  left: 0;
+  border-radius: 18px 0 0 18px;
+}
+
+cdk-tree-node:hover {
+  transform: translateY(-4px) !important;
+  border-color: #06b6d4 !important;
+  box-shadow: 0 16px 32px rgba(6, 182, 212, 0.16) !important;
+}
+
+/* Sub-communities / Collections inside tree */
+cdk-tree-node[style*="padding-left: 40px"],
+cdk-tree-node[style*="margin-left: 40px"],
+cdk-tree-node[style*="padding-right: 40px"],
+cdk-tree-node[style*="margin-right: 40px"] {
+  background: #f8fafc !important;
+  border-right: 4px solid #0284c7 !important;
+  margin-top: 4px !important;
+}
+
+/* Links and titles inside cdk-tree-node */
+cdk-tree-node a,
+cdk-tree-node h5 a,
+cdk-tree-node h6 a {
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
+  color: #0b1329 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+cdk-tree-node a:hover,
+cdk-tree-node h5 a:hover,
+cdk-tree-node h6 a:hover {
+  color: #0891b2 !important;
+}
+
+/* Expand / Collapse toggle button in tree */
+cdk-tree-node button.btn,
+cdk-tree-node button.btn-link,
+cdk-tree-node .expandButton,
+cdk-tree-node .collapseButton {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(6, 182, 212, 0.12) !important;
+  color: #0891b2 !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: 14px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+html[dir="rtl"] cdk-tree-node button.btn,
+html[dir="rtl"] cdk-tree-node button.btn-link {
+  margin-left: 0 !important;
+  margin-right: 14px !important;
+}
+
+cdk-tree-node button.btn:hover,
+cdk-tree-node button.btn-link:hover {
+  background: #0891b2 !important;
+  color: #ffffff !important;
+  transform: scale(1.1) !important;
+}
+
+cdk-tree-node button i,
+cdk-tree-node button .fa {
+  color: inherit !important;
+}
+
+/* Description inside tree node */
+cdk-tree-node .dont-break-out,
+cdk-tree-node ds-truncatable,
+cdk-tree-node .text-muted {
+  color: #64748b !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  margin-top: 8px !important;
+}
+
+/* ============================================================
+   11. SEARCH RESULTS, PROJECT LISTINGS & ITEM CARDS
+   ============================================================ */
+ds-item-search-result-list-element,
+ds-collection-search-result-list-element,
+ds-community-search-result-list-element,
+ds-item-list-element,
+.search-results-list .list-group-item,
+ds-listable-object-component-loader,
+ds-search-results .card,
+.search-results .list-group-item {
+  display: block !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 18px !important;
+  padding: 22px 26px !important;
+  margin-bottom: 18px !important;
+  box-shadow: 0 4px 18px rgba(11, 19, 41, 0.05) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+ds-item-search-result-list-element::before,
+ds-item-list-element::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 5px;
+  background: linear-gradient(180deg, #06b6d4, #0284c7);
+  border-radius: 0 18px 18px 0;
+}
+
+html[dir="ltr"] ds-item-search-result-list-element::before,
+html[dir="ltr"] ds-item-list-element::before {
+  right: auto;
+  left: 0;
+  border-radius: 18px 0 0 18px;
+}
+
+ds-item-search-result-list-element:hover,
+ds-item-list-element:hover,
+ds-listable-object-component-loader:hover {
+  transform: translateY(-4px) !important;
+  border-color: #06b6d4 !important;
+  box-shadow: 0 18px 35px rgba(6, 182, 212, 0.16) !important;
+}
+
+/* Item Titles */
+ds-item-search-result-list-element a.lead,
+ds-item-search-result-list-element h3 a,
+ds-item-search-result-list-element h4 a,
+ds-item-list-element a.lead,
+.lead a {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  color: #0b1329 !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  margin-bottom: 8px !important;
+  transition: color 0.2s ease !important;
+}
+
+ds-item-search-result-list-element a.lead:hover,
+ds-item-search-result-list-element h3 a:hover,
+ds-item-list-element a.lead:hover,
+.lead a:hover {
+  color: #0891b2 !important;
+}
+
+/* Item Authors & Metadata in List */
+ds-item-search-result-list-element .item-list-authors,
+ds-item-search-result-list-element .item-list-date,
+ds-item-search-result-list-element .text-muted,
+.item-list-job-title {
+  font-size: 0.95rem !important;
+  color: #64748b !important;
+  font-weight: 600 !important;
+}
+
+/* Badges inside cards (e.g., Thesis, Open Access, Date) */
+ds-item-search-result-list-element ds-badges .badge,
+ds-item-search-result-list-element .badge,
+.badge-secondary,
+.badge-info {
+  background: rgba(6, 182, 212, 0.12) !important;
+  color: #0891b2 !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+  font-weight: 700 !important;
+  padding: 6px 14px !important;
+  border-radius: 20px !important;
+  font-size: 0.85rem !important;
+}
+
+/* Generic Bootstrap Cards across pages */
+.card {
+  border-radius: 18px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px rgba(11, 19, 41, 0.05) !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+  background: #ffffff !important;
+}
+
+.card:hover {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 12px 28px rgba(6, 182, 212, 0.12) !important;
+}
+
+.card-header {
+  background: #0b1329 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  border-bottom: 2px solid #06b6d4 !important;
+  padding: 16px 24px !important;
+}
+
+.card-body {
+  padding: 24px !important;
+  background: #ffffff !important;
+}
+
+/* Community / Collection Page Banner Card */
+.comcol-header,
+.community-header,
+.collection-header {
+  width: 100% !important;
+  background: linear-gradient(135deg, #070d1e 0%, #0b1329 100%) !important;
+  border-radius: 20px !important;
+  padding: 35px 40px !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(6, 182, 212, 0.35) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+  margin-bottom: 28px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.comcol-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #06b6d4, #0284c7);
+}
+
+/* Ensure inner header components have NO background or padding */
+ds-comcol-page-header,
+ds-comcol-page-logo,
+ds-comcol-page-handle,
+ds-base-comcol-page-handle {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.community-page .d-flex.flex-row.border-bottom,
+.collection-page .d-flex.flex-row.border-bottom {
+  display: block !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 25px !important;
+  width: 100% !important;
+}
+
+.comcol-header h1,
+ds-comcol-page-header h1 {
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  font-size: 2.2rem !important;
+  margin-bottom: 12px !important;
+  letter-spacing: -0.5px !important;
+}
+
+.comcol-header p,
+ds-comcol-page-content p {
+  color: #cbd5e1 !important;
+  font-size: 1.05rem !important;
+  line-height: 1.7 !important;
+}
+
+ds-comcol-page-handle p {
+  color: #94a3b8 !important;
+  font-size: 0.9rem !important;
+  margin-top: 10px !important;
+}
+
+ds-comcol-page-handle a {
+  color: #38bdf8 !important;
+  text-decoration: underline !important;
+}
+
+/* BROWSE TABS IN COMMUNITY & COLLECTION PAGES */
+.comcol-browse-label {
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  color: #0b1329 !important;
+  margin-bottom: 16px !important;
+  display: block !important;
+  position: relative !important;
+}
+
+.comcol-browse .list-group-horizontal {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-bottom: 28px !important;
+}
+
+.comcol-browse .list-group-horizontal .list-group-item {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  padding: 10px 22px !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  box-shadow: 0 2px 8px rgba(11, 19, 41, 0.04) !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+}
+
+.comcol-browse .list-group-horizontal .list-group-item:hover {
+  background: rgba(6, 182, 212, 0.1) !important;
+  color: #0891b2 !important;
+  border-color: #06b6d4 !important;
+  transform: translateY(-2px) !important;
+}
+
+.comcol-browse .list-group-horizontal .list-group-item.active {
+  background: linear-gradient(135deg, #0891b2 0%, #0284c7 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 15px rgba(8, 145, 178, 0.35) !important;
+}
+
+/* Action Buttons inside Community/Collection Page */
+ds-comcol-page-browse-by .btn,
+ds-comcol-search-section .btn,
+.btn-primary,
+button.btn-primary,
+a.btn-primary {
+  background: linear-gradient(135deg, #0891b2 0%, #0284c7 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 10px 22px !important;
+  box-shadow: 0 4px 14px rgba(8, 145, 178, 0.35) !important;
+  transition: all 0.25s ease !important;
+}
+
+.btn-primary:hover,
+button.btn-primary:hover,
+a.btn-primary:hover {
+  background: linear-gradient(135deg, #06b6d4 0%, #0369a1 100%) !important;
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.45) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Breadcrumbs */
+ds-breadcrumbs ol.breadcrumb,
+.breadcrumb {
+  background: transparent !important;
+  padding: 16px 0 !important;
+  margin-bottom: 20px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+}
+
+.breadcrumb-item a {
+  color: #0891b2 !important;
+  text-decoration: none !important;
+}
+
+.breadcrumb-item.active {
+  color: #64748b !important;
+}
