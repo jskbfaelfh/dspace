@@ -200,11 +200,10 @@ ds-text-menu-item {
   box-shadow: none !important;
 }
 
-/* Navigation Links */
-#main-site-navigation a,
-#main-site-navigation a.ds-menu-item,
+/* Navigation Links (Top-level togglers and links ONLY) */
 #main-site-navigation a.ds-menu-toggler-wrapper,
-#main-site-navigation span.ds-menu-item,
+#main-site-navigation > * > .ds-menu-item-wrapper > a:not(.dropdown-item):not(.dropdown-menu *),
+#main-site-navigation > ds-navbar > * > .ds-menu-item-wrapper > a:not(.dropdown-item):not(.dropdown-menu *),
 .ds-menu-toggler-wrapper {
   color: #f1f5f9 !important;
   font-size: 0.95rem !important;
@@ -220,10 +219,8 @@ ds-text-menu-item {
   text-decoration: none !important;
 }
 
-#main-site-navigation a:hover,
-#main-site-navigation a.ds-menu-item:hover,
 #main-site-navigation a.ds-menu-toggler-wrapper:hover,
-#main-site-navigation span.ds-menu-item:hover,
+#main-site-navigation > * > .ds-menu-item-wrapper > a:not(.dropdown-item):not(.dropdown-menu *):hover,
 .ds-menu-toggler-wrapper:hover {
   color: #38bdf8 !important;
   background: rgba(6, 182, 212, 0.2) !important;
@@ -407,48 +404,105 @@ nav#admin-sidebar .sidebar-sub-level-items {
 .dropdown-menu,
 .dropdown-menu.show,
 div[aria-labelledby*="dropdown"],
-#language-menu-list,
 .navbar-nav .dropdown-menu,
 .nav-dropdown-menu,
-ds-expandable-navbar-section .dropdown-menu {
+ds-expandable-navbar-section .dropdown-menu,
+ds-themed-expandable-navbar-section .dropdown-menu,
+div[id*="expandable-navbar-section"][role="menu"] {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
   background: #0b1329 !important;
   background-color: #0b1329 !important;
-  border: 1px solid #06b6d4 !important;
+  border: 1.5px solid #06b6d4 !important;
   border-radius: 14px !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(6, 182, 212, 0.2) !important;
   padding: 8px !important;
-  min-width: 220px !important;
+  min-width: 240px !important;
+  width: max-content !important;
+  max-width: 350px !important;
   text-align: right !important;
   margin-top: 8px !important;
+  overflow: visible !important;
 }
 
+/* Intermediate wrappers inside dropdown menus */
+.dropdown-menu div[role="presentation"],
+.dropdown-menu ds-link-menu-item,
+.dropdown-menu ds-text-menu-item,
+.dropdown-menu .ds-menu-item-wrapper {
+  display: block !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Dropdown Menu Items */
 .dropdown-item,
 .dropdown-menu a,
-.dropdown-menu .ds-menu-item,
-.dropdown-menu button,
-.dropdown-menu span,
+.dropdown-menu a.ds-menu-item,
+.dropdown-menu button.dropdown-item,
 .nav-dropdown-menu a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
   color: #f1f5f9 !important;
   font-weight: 700 !important;
   font-size: 0.95rem !important;
   padding: 10px 16px !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
+  border: 1px solid transparent !important;
   background: transparent !important;
   transition: all 0.2s ease !important;
   text-align: right !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
   text-decoration: none !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
 }
 
 .dropdown-item:hover,
 .dropdown-menu a:hover,
-.dropdown-menu .ds-menu-item:hover,
+.dropdown-menu a.ds-menu-item:hover,
 .nav-dropdown-menu a:hover {
-  background: rgba(6, 182, 212, 0.25) !important;
+  background: rgba(6, 182, 212, 0.22) !important;
   color: #38bdf8 !important;
-  padding-inline-start: 20px !important;
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  transform: none !important;
+}
+
+/* Reset inner spans inside dropdown items so they don't bloat */
+.dropdown-menu a span,
+.dropdown-menu .dropdown-item span {
+  display: inline !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+
+/* Language Switcher specific styling */
+#language-menu-list {
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: 320px !important;
+  overflow-y: auto !important;
+  min-width: 190px !important;
+  width: auto !important;
+}
+
+#language-menu-list .dropdown-item {
+  display: flex !important;
+  align-items: center !important;
+  padding: 8px 14px !important;
+  font-size: 0.9rem !important;
 }
 
 /* ============================================================

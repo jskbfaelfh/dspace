@@ -76,7 +76,8 @@
   }
 
   function fixNavbarButtons() {
-    const wrappers = document.querySelectorAll('.ds-menu-item-wrapper, #main-site-navigation .navbar-nav, ds-navbar-section, ds-expandable-navbar-section');
+    // Transparent wrappers for top-level navbar
+    const wrappers = document.querySelectorAll('.ds-menu-item-wrapper:not(.dropdown-menu *), #main-site-navigation .navbar-nav, ds-navbar-section, ds-expandable-navbar-section');
     wrappers.forEach(w => {
       w.style.setProperty('background-color', 'transparent', 'important');
       w.style.setProperty('background', 'transparent', 'important');
@@ -84,8 +85,9 @@
       w.style.setProperty('box-shadow', 'none', 'important');
     });
 
-    const links = document.querySelectorAll('#main-site-navigation a, #main-site-navigation span.ds-menu-item, .ds-menu-toggler-wrapper');
-    links.forEach(l => {
+    // ONLY top-level togglers and navbar buttons, NEVER items inside dropdown menus!
+    const topLinks = document.querySelectorAll('#main-site-navigation .ds-menu-toggler-wrapper, #main-site-navigation > ds-navbar a:not(.dropdown-item):not(.dropdown-menu *)');
+    topLinks.forEach(l => {
       l.style.setProperty('background', 'rgba(255, 255, 255, 0.06)', 'important');
       l.style.setProperty('color', '#f1f5f9', 'important');
       l.style.setProperty('border-radius', '12px', 'important');
@@ -96,6 +98,7 @@
       l.style.setProperty('text-decoration', 'none', 'important');
     });
 
+    // Fix right-side user & language buttons
     const rightButtons = document.querySelectorAll('#header-right button, ds-user-menu button, ds-lang-switch button, ds-auth-nav-menu button, .search-toggle');
     rightButtons.forEach(b => {
       b.style.setProperty('background', 'rgba(255, 255, 255, 0.06)', 'important');
@@ -117,18 +120,60 @@
   }
 
   function fixDropdowns() {
-    const navDropdowns = document.querySelectorAll('#main-site-navigation .dropdown-menu, ds-expandable-navbar-section .dropdown-menu');
+    const navDropdowns = document.querySelectorAll('.dropdown-menu:not(ds-user-menu .dropdown-menu)');
     navDropdowns.forEach(dd => {
       dd.style.setProperty('background-color', '#0b1329', 'important');
-      dd.style.setProperty('border', '1px solid #06b6d4', 'important');
-      dd.style.setProperty('border-radius', '12px', 'important');
-      dd.style.setProperty('box-shadow', '0 15px 35px rgba(0,0,0,0.6)', 'important');
-      const items = dd.querySelectorAll('a, .ds-menu-item');
+      dd.style.setProperty('border', '1.5px solid #06b6d4', 'important');
+      dd.style.setProperty('border-radius', '14px', 'important');
+      dd.style.setProperty('box-shadow', '0 15px 35px rgba(0,0,0,0.6), 0 0 15px rgba(6,182,212,0.2)', 'important');
+      dd.style.setProperty('display', 'flex', 'important');
+      dd.style.setProperty('flex-direction', 'column', 'important');
+      dd.style.setProperty('gap', '4px', 'important');
+      dd.style.setProperty('padding', '8px', 'important');
+      dd.style.setProperty('min-width', '240px', 'important');
+      dd.style.setProperty('overflow', 'visible', 'important');
+
+      // Ensure intermediate wrappers don't collapse or overlap
+      const wrappers = dd.querySelectorAll('div[role="presentation"], ds-link-menu-item, ds-text-menu-item, .ds-menu-item-wrapper');
+      wrappers.forEach(w => {
+        w.style.setProperty('display', 'block', 'important');
+        w.style.setProperty('width', '100%', 'important');
+        w.style.setProperty('background', 'transparent', 'important');
+        w.style.setProperty('border', 'none', 'important');
+        w.style.setProperty('box-shadow', 'none', 'important');
+        w.style.setProperty('padding', '0', 'important');
+        w.style.setProperty('margin', '0', 'important');
+      });
+
+      // Style actual clickable items as clean vertical list entries
+      const items = dd.querySelectorAll('a, .dropdown-item');
       items.forEach(it => {
-        if (!it.matches(':hover')) {
-          it.style.setProperty('color', '#f1f5f9', 'important');
-          it.style.setProperty('font-weight', '700', 'important');
-        }
+        it.style.setProperty('display', 'flex', 'important');
+        it.style.setProperty('align-items', 'center', 'important');
+        it.style.setProperty('width', '100%', 'important');
+        it.style.setProperty('box-sizing', 'border-box', 'important');
+        it.style.setProperty('padding', '10px 16px', 'important');
+        it.style.setProperty('margin', '0', 'important');
+        it.style.setProperty('border-radius', '10px', 'important');
+        it.style.setProperty('border', '1px solid transparent', 'important');
+        it.style.setProperty('background', 'transparent', 'important');
+        it.style.setProperty('color', '#f1f5f9', 'important');
+        it.style.setProperty('font-weight', '700', 'important');
+        it.style.setProperty('font-size', '0.95rem', 'important');
+        it.style.setProperty('text-align', 'right', 'important');
+        it.style.setProperty('text-decoration', 'none', 'important');
+        it.style.setProperty('white-space', 'nowrap', 'important');
+
+        // Clean any inner spans
+        const spans = it.querySelectorAll('span');
+        spans.forEach(s => {
+          s.style.setProperty('display', 'inline', 'important');
+          s.style.setProperty('background', 'transparent', 'important');
+          s.style.setProperty('border', 'none', 'important');
+          s.style.setProperty('padding', '0', 'important');
+          s.style.setProperty('margin', '0', 'important');
+          s.style.setProperty('box-shadow', 'none', 'important');
+        });
       });
     });
   }
