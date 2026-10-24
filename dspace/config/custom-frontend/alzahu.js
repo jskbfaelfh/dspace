@@ -1,5 +1,5 @@
 // ============================================================
-// AL-ZAHRAWI UNIVERSITY REPOSITORY PORTAL ENHANCER V3
+// AL-ZAHRAWI UNIVERSITY REPOSITORY PORTAL ENHANCER V4
 // ============================================================
 
 (function () {
@@ -76,7 +76,6 @@
   }
 
   function fixNavbarButtons() {
-    // Eradicate white boxes from all menu wrappers
     const wrappers = document.querySelectorAll('.ds-menu-item-wrapper, #main-site-navigation .navbar-nav, ds-navbar-section, ds-expandable-navbar-section');
     wrappers.forEach(w => {
       w.style.setProperty('background-color', 'transparent', 'important');
@@ -97,7 +96,6 @@
       l.style.setProperty('text-decoration', 'none', 'important');
     });
 
-    // Fix right-side user & language buttons
     const rightButtons = document.querySelectorAll('#header-right button, ds-user-menu button, ds-lang-switch button, ds-auth-nav-menu button, .search-toggle');
     rightButtons.forEach(b => {
       b.style.setProperty('background', 'rgba(255, 255, 255, 0.06)', 'important');
@@ -272,6 +270,26 @@
     }
   }
 
+  function enhanceAdvisorBadges() {
+    // In search result list or item metadata table, highlight advisor
+    const elements = document.querySelectorAll('ds-item-search-result-list-element, .item-page-fields tr');
+    elements.forEach(el => {
+      if (el.getAttribute('data-advisor-checked')) return;
+      const html = el.innerHTML;
+      if (html.includes('المشرف') || html.includes('dc.contributor.advisor')) {
+        const advisorSpan = el.querySelector('.item-list-authors, td:last-child');
+        if (advisorSpan && !advisorSpan.querySelector('.alzahu-advisor-chip')) {
+          const chip = document.createElement('span');
+          chip.className = 'alzahu-advisor-chip';
+          chip.style.cssText = 'display: inline-flex; align-items: center; gap: 4px; background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 2px 8px; font-size: 0.82rem; font-weight: 700; margin-inline-start: 6px;';
+          chip.innerHTML = '👨‍🏫 إشراف أكاديمي';
+          advisorSpan.appendChild(chip);
+        }
+      }
+      el.setAttribute('data-advisor-checked', 'true');
+    });
+  }
+
   function runAll() {
     updateLogo();
     enhanceHeroBanner();
@@ -283,6 +301,7 @@
     fixComcolHeaders();
     fixAdminSidebar();
     updateSearchPlaceholder();
+    enhanceAdvisorBadges();
   }
 
   // Initial Run
