@@ -404,12 +404,13 @@ nav#admin-sidebar .sidebar-sub-level-items {
    4. DROPDOWN MENUS (STRICTLY HIDDEN WHEN CLOSED)
    ============================================================ */
 
-/* Closed state: Enforce total hiding */
-.dropdown-menu:not(.show),
-div.dropdown-menu:not(.show),
-#loginDropdownMenu:not(.show),
-#language-menu-list:not(.show),
-[ngbdropdownmenu]:not(.show) {
+/* Closed state: Total hiding by default for ALL dropdown menus */
+.dropdown-menu,
+div.dropdown-menu,
+#language-menu-list,
+#loginDropdownMenu,
+#logoutDropdownMenu,
+[ngbdropdownmenu] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -424,13 +425,36 @@ div.dropdown-menu:not(.show),
   overflow: hidden !important;
 }
 
-/* Open state ONLY when .show is active */
+/* Explicit :not(.show) rule to overcome any child styles */
+.dropdown-menu:not(.show),
+div.dropdown-menu:not(.show),
+#loginDropdownMenu:not(.show),
+#logoutDropdownMenu:not(.show),
+#language-menu-list:not(.show),
+[ngbdropdownmenu]:not(.show),
+.dropdown:not(.show) > .dropdown-menu,
+div[ngbdropdown]:not(.show) > [ngbdropdownmenu] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Open state ONLY when .show is active on menu or container */
 .dropdown-menu.show,
 div.dropdown-menu.show,
-#loginDropdownMenu.show,
 #language-menu-list.show,
-[ngbdropdownmenu].show {
-  display: block !important;
+#loginDropdownMenu.show,
+#logoutDropdownMenu.show,
+[ngbdropdownmenu].show,
+.dropdown.show > .dropdown-menu,
+.dropdown.show > div.dropdown-menu,
+.dropdown.show > [ngbdropdownmenu],
+div[ngbdropdown].show > .dropdown-menu,
+div[ngbdropdown].show > [ngbdropdownmenu],
+.show > .dropdown-menu {
+  display: flex !important;
+  flex-direction: column !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
@@ -443,36 +467,58 @@ div.dropdown-menu.show,
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
   padding: 8px !important;
   min-width: 220px !important;
+  max-width: 90vw !important;
   text-align: right !important;
   margin-top: 8px !important;
+  z-index: 1050 !important;
 }
 
 /* Language selector dropdown when open */
-#language-menu-list.show {
+#language-menu-list.show,
+.dropdown.show > #language-menu-list {
   max-height: 350px !important;
   overflow-y: auto !important;
   min-width: 200px !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* Main Site Navigation Expandable Section */
-#main-site-navigation .dropdown-menu:not(.show) {
-  display: none !important;
+/* User logged-in menu when open */
+#logoutDropdownMenu.show,
+.dropdown.show > #logoutDropdownMenu {
+  min-width: 260px !important;
+  width: max-content !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding: 12px !important;
 }
-#main-site-navigation .ds-menu-item-wrapper:hover .dropdown-menu,
-#main-site-navigation ds-expandable-navbar-section:hover .dropdown-menu,
-#main-site-navigation .dropdown-menu.show {
+
+/* Intermediate wrappers inside open dropdown menus */
+.dropdown-menu div[role="presentation"],
+.dropdown-menu ds-link-menu-item,
+.dropdown-menu ds-text-menu-item,
+.dropdown-menu .ds-menu-item-wrapper {
   display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-.dropdown-item,
-.dropdown-menu a,
-.dropdown-menu .ds-menu-item,
-.dropdown-menu button,
-.dropdown-menu span,
-.nav-dropdown-menu a {
+/* Dropdown items ONLY when parent menu is open (.show) */
+.dropdown-menu.show .dropdown-item,
+.dropdown.show > .dropdown-menu .dropdown-item,
+.dropdown-menu.show a,
+.dropdown.show > .dropdown-menu a,
+.dropdown-menu.show .ds-menu-item,
+.dropdown.show > .dropdown-menu .ds-menu-item,
+.dropdown-menu.show button,
+.dropdown.show > .dropdown-menu button,
+.dropdown-menu.show span.dropdown-item,
+.dropdown.show > .dropdown-menu span.dropdown-item {
   color: #f1f5f9 !important;
   font-weight: 700 !important;
   font-size: 0.95rem !important;
@@ -485,15 +531,28 @@ div.dropdown-menu.show,
   align-items: center !important;
   gap: 8px !important;
   text-decoration: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border: none !important;
 }
 
-.dropdown-item:hover,
-.dropdown-menu a:hover,
-.dropdown-menu .ds-menu-item:hover,
-.nav-dropdown-menu a:hover {
+.dropdown-menu.show .dropdown-item:hover,
+.dropdown.show > .dropdown-menu .dropdown-item:hover,
+.dropdown-menu.show a:hover,
+.dropdown.show > .dropdown-menu a:hover,
+.dropdown-menu.show .ds-menu-item:hover,
+.dropdown.show > .dropdown-menu .ds-menu-item:hover,
+.dropdown-menu.show button:hover,
+.dropdown.show > .dropdown-menu button:hover {
   background: rgba(6, 182, 212, 0.25) !important;
   color: #38bdf8 !important;
   padding-inline-start: 20px !important;
+}
+
+.dropdown-menu.show .dropdown-item.active,
+.dropdown.show > .dropdown-menu .dropdown-item.active {
+  background: rgba(6, 182, 212, 0.3) !important;
+  color: #38bdf8 !important;
 }
 
 /* ============================================================

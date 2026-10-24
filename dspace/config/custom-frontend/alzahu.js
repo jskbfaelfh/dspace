@@ -117,23 +117,22 @@
   }
 
   function fixDropdowns() {
-    // Clean up closed dropdowns so they don't linger with inline styles
-    document.querySelectorAll('.dropdown-menu:not(.show)').forEach(dd => {
-      dd.style.removeProperty('display');
-      dd.style.removeProperty('padding');
-      dd.style.removeProperty('border');
-      dd.style.removeProperty('box-shadow');
-      dd.style.removeProperty('min-width');
-      dd.style.removeProperty('width');
-    });
-
-    // Only style dropdowns when they are actively shown (.show)
-    const openDropdowns = document.querySelectorAll('.dropdown-menu.show');
-    openDropdowns.forEach(dd => {
-      dd.style.setProperty('background-color', '#0b1329', 'important');
-      dd.style.setProperty('border', '1px solid #06b6d4', 'important');
-      dd.style.setProperty('border-radius', '12px', 'important');
-      dd.style.setProperty('box-shadow', '0 15px 35px rgba(0,0,0,0.6)', 'important');
+    document.querySelectorAll('.dropdown-menu, [ngbdropdownmenu]').forEach(dd => {
+      const parent = dd.parentElement;
+      const isOpen = dd.classList.contains('show') || (parent && parent.classList.contains('show'));
+      if (!isOpen) {
+        dd.style.setProperty('display', 'none', 'important');
+        dd.style.setProperty('visibility', 'hidden', 'important');
+        dd.style.setProperty('opacity', '0', 'important');
+      } else {
+        dd.style.removeProperty('display');
+        dd.style.removeProperty('visibility');
+        dd.style.removeProperty('opacity');
+        dd.style.setProperty('background-color', '#0b1329', 'important');
+        dd.style.setProperty('border', '1px solid #06b6d4', 'important');
+        dd.style.setProperty('border-radius', '14px', 'important');
+        dd.style.setProperty('box-shadow', '0 15px 35px rgba(0,0,0,0.6)', 'important');
+      }
     });
   }
 
