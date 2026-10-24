@@ -3,8 +3,6 @@
 // ============================================================
 
 (function () {
-  const SVG_MARKUP = $svgInner;
-
   const collegeIcons = {
     'كلية طب الأسنان': { icon: '🦷', color: '#06b6d4', bg: 'rgba(6,182,212,0.12)' },
     'كلية الصيدلة': { icon: '💊', color: '#0284c7', bg: 'rgba(2,132,199,0.12)' },
@@ -23,11 +21,18 @@
       logoImg.style.display = 'none';
       const parent = logoImg.parentElement;
       if (parent && !document.getElementById('alzahu-inline-logo')) {
-        const span = document.createElement('span');
-        span.id = 'alzahu-inline-logo';
-        span.style.cssText = 'display: inline-block; vertical-align: middle; cursor: pointer;';
-        span.innerHTML = SVG_MARKUP;
-        parent.appendChild(span);
+        const wrapper = document.createElement('div');
+        wrapper.id = 'alzahu-inline-logo';
+        wrapper.style.cssText = 'display: inline-flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none;';
+        wrapper.innerHTML = `
+          <img src="/assets/custom/university-logo.png" alt="شعار جامعة الزهراوي" style="height: 52px; width: auto; object-fit: contain;">
+          <div style="display: flex; flex-direction: column; text-align: right;">
+            <span style="font-family: 'Cairo', Tahoma, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; line-height: 1.2;">جامعة الزهراوي</span>
+            <span style="font-family: 'Alexandria', sans-serif; font-size: 9px; font-weight: 700; color: #38bdf8; letter-spacing: 1.2px; line-height: 1.2;">AL-ZAHRAWI UNIVERSITY</span>
+            <span style="font-family: 'Cairo', Tahoma, sans-serif; font-size: 11px; font-weight: 700; color: #67e8f9; line-height: 1.2;">مستودع مشاريع التخرج</span>
+          </div>
+        `;
+        parent.appendChild(wrapper);
       }
     }
   }
@@ -48,7 +53,7 @@
 
     const heroDiv = document.createElement('div');
     heroDiv.id = 'alzahu-custom-hero';
-    heroDiv.innerHTML = 
+    heroDiv.innerHTML = `
       <div class="alzahu-hero-badge">
         <span>✨ المستودع الرقمي الرسمي</span>
         <span>•</span>
@@ -65,7 +70,7 @@
         <span class="alzahu-pill">🔍 فهرسة وبحث في النصوص الكاملة</span>
         <span class="alzahu-pill">🌐 وصول مفتوح (Open Access)</span>
       </div>
-    ;
+    `;
 
     newsContent.prepend(heroDiv);
   }
@@ -197,27 +202,13 @@
       // Add College Icon Box
       const iconBox = document.createElement('div');
       iconBox.className = 'alzahu-college-icon';
-      iconBox.style.cssText = 
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
-        background: \;
-        font-size: 24px;
-        margin-bottom: 16px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.04);
-      ;
+      iconBox.style.cssText = 'display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 14px; background: ' + info.bg + '; font-size: 24px; margin-bottom: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.04);';
       iconBox.textContent = info.icon;
 
       // Add Card Footer with explore button
       const footer = document.createElement('div');
       footer.className = 'alzahu-card-footer';
-      footer.innerHTML = 
-        <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">مشاريع التخرج المعتمدة</span>
-        <span class="alzahu-explore-btn">تصفح الكلية ←</span>
-      ;
+      footer.innerHTML = '<span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">مشاريع التخرج المعتمدة</span><span class="alzahu-explore-btn">تصفح الكلية ←</span>';
 
       el.prepend(iconBox);
       el.appendChild(footer);
