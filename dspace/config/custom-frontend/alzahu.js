@@ -120,7 +120,7 @@
   }
 
   function fixDropdowns() {
-    const navDropdowns = document.querySelectorAll('.dropdown-menu:not(ds-user-menu .dropdown-menu)');
+    const navDropdowns = document.querySelectorAll('.dropdown-menu:not(ds-user-menu .dropdown-menu):not(#language-menu-list):not(#logoutDropdownMenu)');
     navDropdowns.forEach(dd => {
       dd.style.setProperty('background-color', '#0b1329', 'important');
       dd.style.setProperty('border', '1.5px solid #06b6d4', 'important');
@@ -176,6 +176,98 @@
         });
       });
     });
+  }
+
+  function fixLanguageMenu() {
+    const langMenu = document.getElementById('language-menu-list');
+    if (langMenu) {
+      langMenu.style.setProperty('display', 'flex', 'important');
+      langMenu.style.setProperty('flex-direction', 'column', 'important');
+      langMenu.style.setProperty('max-height', '280px', 'important');
+      langMenu.style.setProperty('overflow-y', 'auto', 'important');
+      langMenu.style.setProperty('overflow-x', 'hidden', 'important');
+      langMenu.style.setProperty('background-color', '#0b1329', 'important');
+      langMenu.style.setProperty('border', '1.5px solid #06b6d4', 'important');
+      langMenu.style.setProperty('border-radius', '14px', 'important');
+      langMenu.style.setProperty('box-shadow', '0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(6, 182, 212, 0.3)', 'important');
+      langMenu.style.setProperty('padding', '8px 4px', 'important');
+      langMenu.style.setProperty('min-width', '190px', 'important');
+      langMenu.style.setProperty('width', '200px', 'important');
+      langMenu.style.setProperty('z-index', '1050', 'important');
+
+      const items = langMenu.querySelectorAll('.dropdown-item');
+      items.forEach(it => {
+        it.style.setProperty('display', 'block', 'important');
+        it.style.setProperty('width', '100%', 'important');
+        it.style.setProperty('padding', '8px 14px', 'important');
+        it.style.setProperty('color', '#f1f5f9', 'important');
+        it.style.setProperty('font-size', '0.9rem', 'important');
+        it.style.setProperty('font-weight', '600', 'important');
+        it.style.setProperty('border-radius', '8px', 'important');
+        it.style.setProperty('text-align', 'right', 'important');
+        it.style.setProperty('white-space', 'nowrap', 'important');
+      });
+    }
+  }
+
+  function fixUserMenu() {
+    const userMenu = document.querySelector('#logoutDropdownMenu, ds-user-menu .dropdown-menu');
+    if (userMenu) {
+      userMenu.style.setProperty('background-color', '#0b1329', 'important');
+      userMenu.style.setProperty('border', '1.5px solid #06b6d4', 'important');
+      userMenu.style.setProperty('border-radius', '18px', 'important');
+      userMenu.style.setProperty('box-shadow', '0 20px 45px rgba(0, 0, 0, 0.75), 0 0 20px rgba(6, 182, 212, 0.25)', 'important');
+      userMenu.style.setProperty('padding', '18px', 'important');
+      userMenu.style.setProperty('min-width', '280px', 'important');
+      userMenu.style.setProperty('z-index', '1050', 'important');
+
+      // Style user email header if present
+      const emailElem = userMenu.querySelector('span.text-truncate, p, .user-email, .dropdown-header');
+      if (emailElem && !emailElem.getAttribute('data-email-styled')) {
+        emailElem.style.setProperty('color', '#38bdf8', 'important');
+        emailElem.style.setProperty('background', 'rgba(6, 182, 212, 0.12)', 'important');
+        emailElem.style.setProperty('border', '1px solid rgba(6, 182, 212, 0.3)', 'important');
+        emailElem.style.setProperty('border-radius', '10px', 'important');
+        emailElem.style.setProperty('padding', '8px 12px', 'important');
+        emailElem.style.setProperty('margin-bottom', '12px', 'important');
+        emailElem.style.setProperty('font-weight', '700', 'important');
+        emailElem.style.setProperty('font-size', '0.92rem', 'important');
+        emailElem.style.setProperty('text-align', 'center', 'important');
+        emailElem.style.setProperty('display', 'block', 'important');
+        emailElem.setAttribute('data-email-styled', 'true');
+      }
+
+      // Links: Profile, MyDSpace, Subscriptions
+      const links = userMenu.querySelectorAll('a.dropdown-item');
+      links.forEach(a => {
+        a.style.setProperty('display', 'flex', 'important');
+        a.style.setProperty('align-items', 'center', 'important');
+        a.style.setProperty('width', '100%', 'important');
+        a.style.setProperty('padding', '10px 14px', 'important');
+        a.style.setProperty('margin-bottom', '4px', 'important');
+        a.style.setProperty('border-radius', '10px', 'important');
+        a.style.setProperty('color', '#f1f5f9', 'important');
+        a.style.setProperty('font-weight', '700', 'important');
+        a.style.setProperty('font-size', '0.95rem', 'important');
+        a.style.setProperty('text-decoration', 'none', 'important');
+      });
+
+      // Logout button
+      const logoutBtn = userMenu.querySelector('button, .logout-btn');
+      if (logoutBtn) {
+        logoutBtn.style.setProperty('background', 'rgba(239, 68, 68, 0.15)', 'important');
+        logoutBtn.style.setProperty('border', '1px solid rgba(239, 68, 68, 0.4)', 'important');
+        logoutBtn.style.setProperty('color', '#f87171', 'important');
+        logoutBtn.style.setProperty('border-radius', '10px', 'important');
+        logoutBtn.style.setProperty('font-weight', '700', 'important');
+        logoutBtn.style.setProperty('padding', '10px 16px', 'important');
+        logoutBtn.style.setProperty('margin-top', '8px', 'important');
+        logoutBtn.style.setProperty('width', '100%', 'important');
+        logoutBtn.style.setProperty('display', 'flex', 'important');
+        logoutBtn.style.setProperty('align-items', 'center', 'important');
+        logoutBtn.style.setProperty('justify-content', 'center', 'important');
+      }
+    }
   }
 
   function fixLoginForm() {
@@ -340,6 +432,8 @@
     enhanceHeroBanner();
     fixNavbarButtons();
     fixDropdowns();
+    fixLanguageMenu();
+    fixUserMenu();
     fixLoginForm();
     enhanceCollegeCards();
     enhanceCommunityTreeNodes();
