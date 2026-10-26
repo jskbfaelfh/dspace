@@ -23,13 +23,13 @@
       if (parent && !document.getElementById('alzahu-inline-logo')) {
         const wrapper = document.createElement('div');
         wrapper.id = 'alzahu-inline-logo';
-        wrapper.style.cssText = 'display: inline-flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none;';
+        wrapper.className = 'alzahu-brand-wrapper';
         wrapper.innerHTML = `
-          <img src="/assets/custom/university-logo.png" alt="شعار جامعة الزهراوي" style="height: 52px; width: auto; object-fit: contain;">
-          <div style="display: flex; flex-direction: column; text-align: right;">
-            <span style="font-family: 'Cairo', Tahoma, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; line-height: 1.2;">جامعة الزهراوي</span>
-            <span style="font-family: 'Alexandria', sans-serif; font-size: 9px; font-weight: 700; color: #38bdf8; letter-spacing: 1.2px; line-height: 1.2;">AL-ZAHRAWI UNIVERSITY</span>
-            <span style="font-family: 'Cairo', Tahoma, sans-serif; font-size: 11px; font-weight: 700; color: #67e8f9; line-height: 1.2;">مستودع مشاريع التخرج</span>
+          <img src="/assets/custom/university-logo.png" alt="شعار جامعة الزهراوي" class="alzahu-logo-img">
+          <div class="alzahu-logo-text">
+            <span class="alzahu-logo-title">جامعة الزهراوي</span>
+            <span class="alzahu-logo-sub">AL-ZAHRAWI UNIVERSITY</span>
+            <span class="alzahu-logo-dep">مستودع مشاريع التخرج</span>
           </div>
         `;
         parent.appendChild(wrapper);
@@ -55,9 +55,7 @@
     heroDiv.id = 'alzahu-custom-hero';
     heroDiv.innerHTML = `
       <div class="alzahu-hero-badge">
-        <span>✨ المستودع الرقمي الرسمي</span>
-        <span>•</span>
-        <span>جامعة الزهراوي</span>
+        <span>✨ المستودع الرقمي الرسمي • جامعة الزهراوي</span>
       </div>
       <h1 class="alzahu-hero-title">مستودع مشاريع التخرج والأبحاث العلمية</h1>
       <div class="alzahu-hero-subtitle">AL-ZAHRAWI UNIVERSITY REPOSITORY</div>
